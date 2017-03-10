@@ -265,7 +265,7 @@ extension TopicListModel {
             var resultArray:[TopicListModel] = []
             var maxPage = 1
             if let jiHtml = response.result.value {
-                if let aRootNode = jiHtml.xPath("//*[@id='Main']/div[@class='box']/div[@class='cell item']"){
+                if let aRootNode = jiHtml.xPath("//*[@class='cell item']"){
                     for aNode in aRootNode {
                         let topic = TopicListModel(favoritesRootNode:aNode)
                         resultArray.append(topic);
@@ -276,7 +276,7 @@ extension TopicListModel {
 
                 //获取最大页码 只有第一页需要获取maxPage
                 if page <= 1
-                    ,let aRootNode = jiHtml.xPath("//*[@id='Main']/div[@class='box']/div[last()]/table/tr/td/a[@class='page_normal']")?.last
+                    ,let aRootNode = jiHtml.xPath("//*[@class='page_normal']")?.last
                     , let page = aRootNode.content
                     , let pageInt = Int(page)
                 {

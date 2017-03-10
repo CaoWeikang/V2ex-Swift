@@ -96,9 +96,23 @@ class RightViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         let rowCount = self.tableView(self.tableView, numberOfRowsInSection: 0)
         let paddingTop = (SCREEN_HEIGHT - CGFloat(rowCount) * rowHeight) / 2
         self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: paddingTop))
-
     }
-    
+    func maximumRightDrawerWidth() -> CGFloat{
+        // 调整RightView宽度
+        let cell = RightNodeTableViewCell()
+        let cellFont = UIFont(name: cell.nodeNameLabel.font.familyName, size: cell.nodeNameLabel.font.pointSize)
+        for node in rightNodes {
+            let size = node.nodeName!.boundingRect(with: CGSize(width: CGFloat(MAXFLOAT), height: CGFloat(MAXFLOAT)),
+                                                   options: NSStringDrawingOptions.usesLineFragmentOrigin,
+                                                   attributes: ["NSFontAttributeName":cellFont!],
+                                                   context: nil)
+            let width = size.width + 50
+            if width > 100 {
+                return width
+            }
+        }
+        return 100
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return rightNodes.count;
     }

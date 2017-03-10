@@ -147,7 +147,7 @@ class AccountsManagerViewController: UIViewController,UITableViewDataSource,UITa
             if let username = user.username,let password = user.password {
                 V2BeginLoadingWithStatus("正在登录")
                 UserModel.Login(username, password: password){
-                    (response:V2ValueResponse<String>) -> Void in
+                    (response:V2ValueResponse<String> , is2FALoggedIn:Bool) -> Void in
                     if response.success {
                         V2Success("登录成功")
                         let username = response.value!
@@ -158,6 +158,10 @@ class AccountsManagerViewController: UIViewController,UITableViewDataSource,UITa
                         UserModel.getUserInfoByUsername(username, completionHandler: { (response) -> Void in
                             self.tableView.reloadData()
                         })
+                        if is2FALoggedIn {
+                            let twoFaViewController = TwoFAViewController()
+                            V2Client.sharedInstance.centerViewController!.navigationController?.present(twoFaViewController, animated: true, completion: nil);
+                        }
                     }
                     else{
                         V2Error(response.message)
